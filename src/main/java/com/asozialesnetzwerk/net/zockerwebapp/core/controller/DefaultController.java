@@ -1,4 +1,4 @@
-package com.asozialesnetzwerk.net.zockerwebapp.controller;
+package com.asozialesnetzwerk.net.zockerwebapp.core.controller;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
