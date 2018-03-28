@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-public class Topic {
+public class TestTopic {
 
     @Id
     @GeneratedValue(generator = "uuid2")
@@ -17,7 +17,7 @@ public class Topic {
     private String title;
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "topic")
-    private List<Entry> entries = new ArrayList<>();
+    private List<TestEntry> entries = new ArrayList<>();
 
     public String getId() {
         return id;
@@ -35,11 +35,11 @@ public class Topic {
         this.title = title;
     }
 
-    public List<Entry> getEntries() {
+    public List<TestEntry> getEntries() {
         return entries;
     }
 
-    public void setEntries(List<Entry> entries) {
+    public void setEntries(List<TestEntry> entries) {
         this.entries = entries;
     }
 }

@@ -1,9 +1,10 @@
 package com.asozialesnetzwerk.net.zockerwebapp.core.controller;
 
-import com.asozialesnetzwerk.net.zockerwebapp.core.model.Entry;
-import com.asozialesnetzwerk.net.zockerwebapp.core.model.Topic;
+import com.asozialesnetzwerk.net.zockerwebapp.core.model.TestEntry;
+import com.asozialesnetzwerk.net.zockerwebapp.core.model.TestTopic;
 import com.asozialesnetzwerk.net.zockerwebapp.core.repository.EntryRepository;
 import com.asozialesnetzwerk.net.zockerwebapp.core.repository.TopicRepository;
+import com.asozialesnetzwerk.net.zockerwebapp.core.services.TopicCreator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpStatus;
@@ -21,60 +22,62 @@ public class TestController {
 
     private final EntryRepository entryRepository;
     private final TopicRepository topicRepository;
+    private final TopicCreator topicCreator;
 
     @Autowired
-    public TestController(EntryRepository entryRepository, TopicRepository topicRepository) {
+    public TestController(EntryRepository entryRepository, TopicRepository topicRepository, TopicCreator topicCreator) {
         this.entryRepository = entryRepository;
         this.topicRepository = topicRepository;
+        this.topicCreator = topicCreator;
     }
 
     @GetMapping("/api/entry")
-    public HttpEntity<Iterable<Entry>> getEntries()  {
-        Iterable<Entry> entries = entryRepository.findAll();
+    public HttpEntity<Iterable<TestEntry>> getEntries()  {
+        Iterable<TestEntry> entries = entryRepository.findAll();
 
         return new ResponseEntity<>(entries, HttpStatus.OK);
     }
 
     @PostMapping(value = "/api/entry")
-    public HttpEntity<Entry> createEntry(@RequestBody Entry entry) {
+    public HttpEntity<TestEntry> createEntry(@RequestBody TestEntry entry) {
         entryRepository.save(entry);
 
         return new ResponseEntity<>(entry, HttpStatus.CREATED);
     }
 
     @GetMapping("/api/topic")
-    public HttpEntity<Iterable<Topic>> getTopics()  {
-        Iterable<Topic> topics = topicRepository.findAll();
+    public HttpEntity<Iterable<TestTopic>> getTopics()  {
+        Iterable<TestTopic> topics = topicRepository.findAll();
 
         return new ResponseEntity<>(topics, HttpStatus.OK);
     }
 
     @PostMapping(value = "/api/topic")
-    public HttpEntity<Topic> createTopic(@RequestBody Topic topic) {
-        topicRepository.save(topic);
+    public HttpEntity<TestTopic> createTopic(@RequestBody TestTopic testTopic) {
+        topicRepository.save(testTopic);
 
-        return new ResponseEntity<>(topic, HttpStatus.CREATED);
+        return new ResponseEntity<>(testTopic, HttpStatus.CREATED);
     }
 
     @GetMapping("/api/generate-topic")
-    public HttpEntity<Topic> generateTopic()  {
+    public HttpEntity<TestTopic> generateTopic()  {
 
-        Topic topic = new Topic();
-        topic.setTitle("FIRST TITLE");
-        topic.setEntries(generateEntires());
+        TestTopic testTopic = new TestTopic();
+        testTopic.setTitle("FIRST TITLE");
+        testTopic.setEntries(generateEntires());
 
-        topicRepository.save(topic);
+        topicCreator.create(testTopic);
 
-        return new ResponseEntity<>(topic, HttpStatus.OK);
+        return new ResponseEntity<>(testTopic, HttpStatus.OK);
     }
 
-    private List<Entry> generateEntires() {
-        List<Entry> entries = new ArrayList<>();
+    private List<TestEntry> generateEntires() {
+        List<TestEntry> entries = new ArrayList<>();
 
-        entries.add(new Entry("Jubbelduuu"));
-        entries.add(new Entry("JUHAYYYY"));
-        entries.add(new Entry("Lorem Ipsum trallalaaa"));
-        entries.add(new Entry("Pfahsel Hase"));
+        entries.add(new TestEntry("Jubbelduuu"));
+        entries.add(new TestEntry("JUHAYYYY"));
+        entries.add(new TestEntry("Lorem Ipsum trallalaaa"));
+        entries.add(new TestEntry("Pfahsel Hase"));
 
         return entries;
     }

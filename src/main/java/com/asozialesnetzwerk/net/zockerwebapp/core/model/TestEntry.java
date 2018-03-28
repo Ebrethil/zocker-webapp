@@ -5,25 +5,24 @@ import org.hibernate.annotations.GenericGenerator;
 import javax.persistence.*;
 
 @Entity
-public class Entry {
+public class TestEntry {
 
-    //default constructor
-    public Entry() {}
+    public TestEntry() {}
 
-    public Entry(String content) {
+    public TestEntry(String content) {
         this.content = content;
     }
 
     @Id
-    @GeneratedValue(generator = "system-uuid")
-    @GenericGenerator(name = "system-uuid", strategy = "uuid")
+    @GeneratedValue(generator = "uuid2")
+    @GenericGenerator(name = "uuid2", strategy = "org.hibernate.id.UUIDGenerator")
     private String id;
 
     private String content;
 
     @ManyToOne
     @JoinColumn(name = "topic_id")
-    private Topic topic;
+    private TestTopic testTopic;
 
     public String getId() {
         return id;
@@ -41,11 +40,11 @@ public class Entry {
         this.content = content;
     }
 
-    public Topic getTopic() {
-        return topic;
+    public TestTopic getTestTopic() {
+        return testTopic;
     }
 
-    public void setTopic(Topic topic) {
-        this.topic = topic;
+    public void setTestTopic(TestTopic testTopic) {
+        this.testTopic = testTopic;
     }
 }
