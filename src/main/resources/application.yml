@@ -3,6 +3,10 @@ spring:
         url: jdbc:mysql://127.0.0.1:3306/zocker-webapp?useSSL=false
         username: root
         password: 23make48
+    jpa:
+        hibernate:
+            ddl-auto: update
+
 
 server:
-  port: 5006
+    port: 5005
