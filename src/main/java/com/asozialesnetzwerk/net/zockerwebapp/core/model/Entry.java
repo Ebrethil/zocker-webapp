@@ -22,7 +22,7 @@ public class Entry {
 
     @ManyToOne
     @JoinColumn(name = "topic_id")
-    private Topic testTopic;
+    private Topic topic;
 
     public String getId() {
         return id;
@@ -41,10 +41,10 @@ public class Entry {
     }
 
     public Topic getTopic() {
-        return testTopic;
+        return topic;
     }
 
-    public void setTopic(Topic testTopic) {
-        this.testTopic = testTopic;
+    public void setTopic(Topic topic) {
+        this.topic = topic;
     }
 }
