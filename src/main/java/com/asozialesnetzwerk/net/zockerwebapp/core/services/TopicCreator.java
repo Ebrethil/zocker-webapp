@@ -1,7 +1,7 @@
 package com.asozialesnetzwerk.net.zockerwebapp.core.services;
 
-import com.asozialesnetzwerk.net.zockerwebapp.core.model.TestEntry;
-import com.asozialesnetzwerk.net.zockerwebapp.core.model.TestTopic;
+import com.asozialesnetzwerk.net.zockerwebapp.core.model.Entry;
+import com.asozialesnetzwerk.net.zockerwebapp.core.model.Topic;
 import com.asozialesnetzwerk.net.zockerwebapp.core.repository.EntryRepository;
 import com.asozialesnetzwerk.net.zockerwebapp.core.repository.TopicRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,9 +19,9 @@ public class TopicCreator {
         this.entryRepository = entryRepository;
     }
 
-    public void create(TestTopic testTopic) {
-        for (TestEntry entry : testTopic.getEntries()) {
-            entry.setTestTopic(testTopic);
+    public void create(Topic testTopic) {
+        for (Entry entry : testTopic.getEntries()) {
+            entry.setTopic(testTopic);
         }
 
         topicRepository.save(testTopic);
