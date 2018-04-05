@@ -9,7 +9,20 @@ import java.util.LinkedList;
 import java.util.List;
 
 @Entity
-public class Comment<T> {
+public class Comment {
+
+    public Comment() {};
+
+    public Comment(String content, Post post) {
+        this.content = content;
+        this.post = post;
+    }
+
+    public Comment(String id, String content, Post post) {
+        this.id = id;
+        this.content = content;
+        this.post = post;
+    }
 
     @Id
     @GeneratedValue(generator = "uuid2")
@@ -23,9 +36,6 @@ public class Comment<T> {
     @ManyToOne
     @JoinColumn(name = "post_id")
     private Post post;
-
-    @OneToMany
-    private List<Comment> subComments = new ArrayList<>();
 
     private LocalDateTime created;
 
@@ -53,14 +63,6 @@ public class Comment<T> {
 
     public void setAuthor(String author) {
         this.author = author;
-    }
-
-    public List<Comment> getSubComments() {
-        return subComments;
-    }
-
-    public void setSubComments(List<Comment> subComments) {
-        this.subComments = subComments;
     }
 
     public LocalDateTime getCreated() {

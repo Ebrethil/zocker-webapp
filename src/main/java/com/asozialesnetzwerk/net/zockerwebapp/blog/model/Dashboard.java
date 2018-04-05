@@ -8,6 +8,12 @@ import java.util.List;
 @Entity
 public class Dashboard {
 
+    public Dashboard() {}
+
+    public Dashboard(String title) {
+        this.title = title;
+    }
+
     @Id
     @GeneratedValue(generator = "uuid2")
     @GenericGenerator(name = "uuid2", strategy = "org.hibernate.id.UUIDGenerator")

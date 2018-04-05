@@ -27,16 +27,16 @@ public class PostController {
         return new ResponseEntity(HttpStatus.CREATED);
     }
 
-    @DeleteMapping("/api/dashboard/{dashboardId}/post/{postId}")
-    public HttpEntity delete(@PathVariable String postId) {
-        postRepository.delete(postId);
+    @PutMapping("/api/dashboard/{dashboardId}/post/")
+    public HttpEntity updatePost(@RequestBody Post post) {
+        postRepository.save(post); //TODO: Check if repository.save(existingElement) automatically updates element
 
         return new ResponseEntity(HttpStatus.OK);
     }
 
-    @PutMapping("/api/dashboard/{dashboardId}/post/")
-    public HttpEntity updatePost(@RequestBody Post post) {
-        postRepository.save(post); //TODO: Check if repository.save(existingElement) automatically updates element
+    @DeleteMapping("/api/dashboard/{dashboardId}/post/{postId}")
+    public HttpEntity delete(@PathVariable String postId) {
+        postRepository.delete(postId);
 
         return new ResponseEntity(HttpStatus.OK);
     }
