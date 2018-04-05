@@ -1,35 +1,49 @@
 package com.asozialesnetzwerk.net.zockerwebapp.blog.model;
 
-import com.asozialesnetzwerk.net.zockerwebapp.users.model.User;
-import org.springframework.data.annotation.Id;
+import org.hibernate.annotations.GenericGenerator;
 
-import javax.persistence.OneToMany;
+import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.LinkedList;
+import java.util.List;
 
+//@JsonIdentityInfo(
+//        generator=ObjectIdGenerators.PropertyGenerator.class,
+//        property="id",
+//        resolver = EntityIdResolver.class,
+//        scope = Post.class
+//)
+@Entity
 public class Post {
 
     @Id
-    private Long id;
+    @GeneratedValue(generator = "uuid2")
+    @GenericGenerator(name = "uuid2", strategy = "org.hibernate.id.UUIDGenerator")
+    private String id;
 
     private String title;
 
     private String content;
 
-    private User author;
+    private String author;
 
-    @OneToMany
-    private LinkedList<Comment> comments;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "post")
+    private List<Comment> comments = new ArrayList<>();
+
+    @ManyToOne
+    @JoinColumn(name = "dashboard_id")
+    private Dashboard dashboard;
 
     private LocalDateTime created;
 
     private LocalDateTime modified;
 
-    public Long getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(String id) {
         this.id = id;
     }
 
@@ -49,19 +63,19 @@ public class Post {
         this.content = content;
     }
 
-    public User getAuthor() {
+    public String getAuthor() {
         return author;
     }
 
-    public void setAuthor(User author) {
+    public void setAuthor(String author) {
         this.author = author;
     }
 
-    public LinkedList<Comment> getComments() {
+    public List<Comment> getComments() {
         return comments;
     }
 
-    public void setComments(LinkedList<Comment> comments) {
+    public void setComments(List<Comment> comments) {
         this.comments = comments;
     }
 
@@ -79,5 +93,13 @@ public class Post {
 
     public void setModified(LocalDateTime modified) {
         this.modified = modified;
+    }
+
+    public Dashboard getDashboard() {
+        return dashboard;
+    }
+
+    public void setDashboard(Dashboard dashboard) {
+        this.dashboard = dashboard;
     }
 }

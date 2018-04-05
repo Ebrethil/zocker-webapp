@@ -7,6 +7,6 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public interface PostRepository extends JpaRepository<Post, Long>{
-    public List<Post> findAllByAuthor_Id(Long id);
+public interface PostRepository extends JpaRepository<Post, String>{
+    List<Post> findAllByDashboard_Id(String id);
 }

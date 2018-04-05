@@ -1,12 +1,12 @@
 package com.asozialesnetzwerk.net.zockerwebapp.blog.web.controller;
 
 import com.asozialesnetzwerk.net.zockerwebapp.blog.model.Post;
-import com.asozialesnetzwerk.net.zockerwebapp.blog.repository.CommentRepository;
 import com.asozialesnetzwerk.net.zockerwebapp.blog.repository.PostRepository;
-import com.asozialesnetzwerk.net.zockerwebapp.users.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -14,31 +14,46 @@ import java.util.List;
 public class PostController {
 
     private final PostRepository postRepository;
-    private final CommentRepository commentRepository;
 
     @Autowired
-    public PostController(PostRepository postRepository, CommentRepository commentRepository) {
+    public PostController(PostRepository postRepository) {
         this.postRepository = postRepository;
-        this.commentRepository = commentRepository;
     }
 
-    public void createPost(@RequestBody Post post) {
+    @PostMapping("/api/dashboard/{dashboardId}/post")
+    public HttpEntity createPost(@RequestBody Post post) {
         postRepository.save(post);
+
+        return new ResponseEntity(HttpStatus.CREATED);
     }
 
-    public void delete(@RequestBody Long id) {
-        postRepository.delete(id);
+    @DeleteMapping("/api/dashboard/{dashboardId}/post/{postId}")
+    public HttpEntity delete(@PathVariable String postId) {
+        postRepository.delete(postId);
+
+        return new ResponseEntity(HttpStatus.OK);
     }
 
-    public Post getPost(@RequestBody Long id) {
-        return postRepository.findOne(id);
+    @PutMapping("/api/dashboard/{dashboardId}/post/")
+    public HttpEntity updatePost(@RequestBody Post post) {
+        postRepository.save(post); //TODO: Check if repository.save(existingElement) automatically updates element
+
+        return new ResponseEntity(HttpStatus.OK);
     }
 
-    public List<Post> getPosts() {
-        return postRepository.findAll();
+    @GetMapping("/api/dashboard/{dashboardId}/post/{id}")
+    public HttpEntity<Post> getPost(@PathVariable String id) {
+        return new ResponseEntity<>(postRepository.findOne(id), HttpStatus.FOUND);
     }
 
-    public List<Post> getPostsByAuthor(@RequestBody Long id) {
-        return postRepository.findAllByAuthor_Id(id);
+    @GetMapping("/api/dashboard/{dashboardId}/post")
+    public HttpEntity<List<Post>> getPostsByDashboard(@PathVariable String dashboardId) {
+        return new ResponseEntity<>(postRepository.findAllByDashboard_Id(dashboardId), HttpStatus.FOUND);
+    }
+
+
+    @GetMapping("/api/post")
+    public HttpEntity<List<Post>> getPosts() {
+        return new ResponseEntity<>(postRepository.findAll(), HttpStatus.FOUND);
     }
 }

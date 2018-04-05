@@ -1,38 +1,41 @@
 package com.asozialesnetzwerk.net.zockerwebapp.blog.model;
 
-import com.asozialesnetzwerk.net.zockerwebapp.users.model.User;
-import org.springframework.data.annotation.Id;
+import org.hibernate.annotations.GenericGenerator;
 
-import javax.persistence.OneToMany;
+import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.LinkedList;
+import java.util.List;
 
+@Entity
 public class Comment<T> {
 
     @Id
-    private Long id;
+    @GeneratedValue(generator = "uuid2")
+    @GenericGenerator(name = "uuid2", strategy = "org.hibernate.id.UUIDGenerator")
+    private String id;
 
     private String content;
 
-    private User author;
+    private String author;
 
-    /**
-     *  Depends if Comment belongs to Post or other Comment
-     */
-    private T parent;
+    @ManyToOne
+    @JoinColumn(name = "post_id")
+    private Post post;
 
     @OneToMany
-    private LinkedList<Comment> subComments;
+    private List<Comment> subComments = new ArrayList<>();
 
     private LocalDateTime created;
 
     private LocalDateTime modified;
 
-    public Long getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(String id) {
         this.id = id;
     }
 
@@ -44,19 +47,19 @@ public class Comment<T> {
         this.content = content;
     }
 
-    public User getAuthor() {
+    public String getAuthor() {
         return author;
     }
 
-    public void setAuthor(User author) {
+    public void setAuthor(String author) {
         this.author = author;
     }
 
-    public LinkedList<Comment> getSubComments() {
+    public List<Comment> getSubComments() {
         return subComments;
     }
 
-    public void setSubComments(LinkedList<Comment> subComments) {
+    public void setSubComments(List<Comment> subComments) {
         this.subComments = subComments;
     }
 
@@ -74,5 +77,13 @@ public class Comment<T> {
 
     public void setModified(LocalDateTime modified) {
         this.modified = modified;
+    }
+
+    public Post getPost() {
+        return post;
+    }
+
+    public void setPost(Post post) {
+        this.post = post;
     }
 }
