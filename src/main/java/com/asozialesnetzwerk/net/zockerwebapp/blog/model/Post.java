@@ -2,20 +2,22 @@ package com.asozialesnetzwerk.net.zockerwebapp.blog.model;
 
 import org.hibernate.annotations.GenericGenerator;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
 
-//@JsonIdentityInfo(
-//        generator=ObjectIdGenerators.PropertyGenerator.class,
-//        property="id",
-//        resolver = EntityIdResolver.class,
-//        scope = Post.class
-//)
 @Entity
 public class Post {
+
+    public Post() {}
+
+    public Post(String title, String content, String dashboardId) {
+        this.title = title;
+        this.content = content;
+        this.dashboardId = dashboardId;
+    }
 
     @Id
     @GeneratedValue(generator = "uuid2")
@@ -24,16 +26,12 @@ public class Post {
 
     private String title;
 
+    @Column(length = 16777215)
     private String content;
 
     private String author;
 
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "post")
-    private List<Comment> comments = new ArrayList<>();
-
-    @ManyToOne
-    @JoinColumn(name = "dashboard_id")
-    private Dashboard dashboard;
+    private String dashboardId;
 
     private LocalDateTime created;
 
@@ -71,14 +69,6 @@ public class Post {
         this.author = author;
     }
 
-    public List<Comment> getComments() {
-        return comments;
-    }
-
-    public void setComments(List<Comment> comments) {
-        this.comments = comments;
-    }
-
     public LocalDateTime getCreated() {
         return created;
     }
@@ -95,11 +85,11 @@ public class Post {
         this.modified = modified;
     }
 
-    public Dashboard getDashboard() {
-        return dashboard;
+    public String getDashboardId() {
+        return dashboardId;
     }
 
-    public void setDashboard(Dashboard dashboard) {
-        this.dashboard = dashboard;
+    public void setDashboardId(String dashboardId) {
+        this.dashboardId = dashboardId;
     }
 }

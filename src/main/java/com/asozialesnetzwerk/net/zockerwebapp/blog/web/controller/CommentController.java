@@ -17,30 +17,24 @@ import java.util.List;
 @RestController
 public class CommentController {
 
-    private final PostRepository postRepository;
     private final CommentRepository commentRepository;
 
    @Autowired
-    public CommentController(PostRepository postRepository, CommentRepository commentRepository) {
-        this.postRepository = postRepository;
-        this.commentRepository = commentRepository;
+    public CommentController(CommentRepository commentRepository) {
+       this.commentRepository = commentRepository;
     }
 
 
     @PostMapping("/api/comments")
     public HttpEntity createComment(@RequestBody CommentDto commentDto) {
-       Post parentPost = postRepository.findOne(commentDto.getPostId());
-
-       commentRepository.save(new Comment(commentDto.getContent(), parentPost));
+       commentRepository.save(new Comment(commentDto.getContent(), commentDto.getPostId()));
 
        return new ResponseEntity(HttpStatus.CREATED);
     }
 
     @PutMapping("/api/comments/{id}")
     public HttpEntity updatePost(@RequestBody CommentDto commentDto) {
-        Post parentPost = postRepository.findOne(commentDto.getPostId());
-
-        commentRepository.save(new Comment(commentDto.getId(), commentDto.getContent(), parentPost));
+        commentRepository.save(new Comment(commentDto.getId(), commentDto.getContent(), commentDto.getPostId()));
 
         return new ResponseEntity(HttpStatus.OK);
     }
@@ -53,7 +47,11 @@ public class CommentController {
     }
 
     @GetMapping("api/comments")
-    public HttpEntity<List<Comment>> getAllCommentsOfTopic(@RequestBody String postId) {
-       return new ResponseEntity<>(commentRepository.findAllByPost_Id(postId), HttpStatus.FOUND);
+    public HttpEntity<List<Comment>> getComments(@RequestParam(value = "postId", required = false) String postId) {
+       if (!postId.isEmpty()) {
+           return new ResponseEntity<>(commentRepository.findAllByPostId(postId), HttpStatus.FOUND);
+       }
+
+       return new ResponseEntity<>(commentRepository.findAll(), HttpStatus.FOUND);
     }
 }

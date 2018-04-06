@@ -28,13 +28,13 @@ public class DashboardController {
     }
 
     @GetMapping("/api/dashboards")
-    public HttpEntity<List<Dashboard>> getAllDashboards() {
-        return new ResponseEntity<>(dashboardRepository.findAll(), HttpStatus.FOUND);
+    public HttpEntity<List<Dashboard>> getDashboards() {
+        return new ResponseEntity<>(dashboardRepository.findAll(), HttpStatus.OK);
     }
 
     @GetMapping("/api/dashboards/{id}")
     public HttpEntity<Dashboard> getDashboardById(@PathVariable String id) {
-        return new ResponseEntity<>(dashboardRepository.findOne(id), HttpStatus.FOUND);
+        return new ResponseEntity<>(dashboardRepository.findOne(id), HttpStatus.OK);
     }
 
     @DeleteMapping("/api/dashboards/{id}")

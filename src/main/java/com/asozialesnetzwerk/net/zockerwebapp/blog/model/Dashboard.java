@@ -2,8 +2,9 @@ package com.asozialesnetzwerk.net.zockerwebapp.blog.model;
 
 import org.hibernate.annotations.GenericGenerator;
 
-import javax.persistence.*;
-import java.util.List;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
 
 @Entity
 public class Dashboard {
@@ -21,8 +22,6 @@ public class Dashboard {
 
     private String title;
 
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "dashboard")
-    private List<Post> posts;
 
     public String getId() {
         return id;
@@ -38,13 +37,5 @@ public class Dashboard {
 
     public void setTitle(String title) {
         this.title = title;
-    }
-
-    public List<Post> getPosts() {
-        return posts;
-    }
-
-    public void setPosts(List<Post> posts) {
-        this.posts = posts;
     }
 }

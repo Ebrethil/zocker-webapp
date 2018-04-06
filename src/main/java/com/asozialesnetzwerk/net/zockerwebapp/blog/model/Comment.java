@@ -2,26 +2,25 @@ package com.asozialesnetzwerk.net.zockerwebapp.blog.model;
 
 import org.hibernate.annotations.GenericGenerator;
 
-import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
 
 @Entity
 public class Comment {
 
-    public Comment() {};
+    public Comment() {}
 
-    public Comment(String content, Post post) {
+    public Comment(String content, String postId) {
         this.content = content;
-        this.post = post;
+        this.postId = postId;
     }
 
-    public Comment(String id, String content, Post post) {
+    public Comment(String id, String content, String postId) {
         this.id = id;
         this.content = content;
-        this.post = post;
+        this.postId = postId;
     }
 
     @Id
@@ -33,9 +32,7 @@ public class Comment {
 
     private String author;
 
-    @ManyToOne
-    @JoinColumn(name = "post_id")
-    private Post post;
+    private String postId;
 
     private LocalDateTime created;
 
@@ -81,11 +78,11 @@ public class Comment {
         this.modified = modified;
     }
 
-    public Post getPost() {
-        return post;
+    public String getPostId() {
+        return postId;
     }
 
-    public void setPost(Post post) {
-        this.post = post;
+    public void setPostId(String postId) {
+        this.postId = postId;
     }
 }
